@@ -25,9 +25,10 @@ export function useWallet() {
 
   const hasWallet = typeof window !== 'undefined' && Boolean(window.ethereum)
 
-  const reset = useCallback(() => {
+  const disconnect = useCallback(() => {
     setAddress(null)
     setChainId(null)
+    setError(null)
   }, [])
 
   const connect = useCallback(async () => {
@@ -47,8 +48,12 @@ export function useWallet() {
 
       setAddress(accounts[0])
       setChainId(Number(network.chainId))
-    } catch {
-      setError('Could not connect to your wallet. Please try again.')
+    } catch (err) {
+      if (err.code === 4001) {
+        setError('Connection request was rejected.')
+      } else {
+        setError('Could not connect to your wallet. Please try again.')
+      }
     } finally {
       setIsConnecting(false)
     }
@@ -61,7 +66,7 @@ export function useWallet() {
 
     const handleAccountsChanged = (accounts) => {
       if (accounts.length === 0) {
-        reset()
+        disconnect()
       } else {
         setAddress(accounts[0])
       }
@@ -73,14 +78,14 @@ export function useWallet() {
 
     window.ethereum.on('accountsChanged', handleAccountsChanged)
     window.ethereum.on('chainChanged', handleChainChanged)
-    window.ethereum.on('disconnect', reset)
+    window.ethereum.on('disconnect', disconnect)
 
     return () => {
       window.ethereum.removeListener('accountsChanged', handleAccountsChanged)
       window.ethereum.removeListener('chainChanged', handleChainChanged)
-      window.ethereum.removeListener('disconnect', reset)
+      window.ethereum.removeListener('disconnect', disconnect)
     }
-  }, [hasWallet, reset])
+  }, [hasWallet, disconnect])
 
   return {
     address,
@@ -91,5 +96,6 @@ export function useWallet() {
     hasWallet,
     error,
     connect,
+    disconnect,
   }
 }
