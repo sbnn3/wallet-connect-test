@@ -1,9 +1,6 @@
 import { useWallet } from '../hooks/useWallet'
+import { shortenAddress } from '../lib/formatAddress'
 import './WalletConnect.css'
-
-function shortenAddress(address) {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`
-}
 
 export function WalletConnect() {
   const {
