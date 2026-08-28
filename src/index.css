@@ -1,7 +1,39 @@
 :root {
   color-scheme: light dark;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-family: -apple-system, system-ui, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
+
+  --accent: #6c3bff;
+  --accent-strong: #5a2fe0;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(255, 255, 255, 0.6);
+  --text-primary: #16151a;
+  --text-secondary: #6f6b7a;
+  --shadow: 0 20px 45px rgba(76, 29, 149, 0.14);
+  --bg-gradient: radial-gradient(
+      circle at 15% 20%,
+      rgba(108, 59, 255, 0.16),
+      transparent 45%
+    ),
+    radial-gradient(circle at 85% 80%, rgba(59, 130, 246, 0.14), transparent 50%),
+    #f4f3f9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: rgba(30, 27, 41, 0.75);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #f2f1f6;
+    --text-secondary: #a29db3;
+    --shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
+    --bg-gradient: radial-gradient(
+        circle at 15% 20%,
+        rgba(108, 59, 255, 0.25),
+        transparent 45%
+      ),
+      radial-gradient(circle at 85% 80%, rgba(59, 130, 246, 0.2), transparent 50%),
+      #131118;
+  }
 }
 
 * {
@@ -10,13 +42,7 @@
 
 body {
   margin: 0;
-  background: #f6f5f8;
-  color: #1a1a1a;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #16151a;
-    color: #f2f2f2;
-  }
+  min-height: 100vh;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
 }
