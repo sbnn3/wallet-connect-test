@@ -6,7 +6,8 @@ function shortenAddress(address) {
 }
 
 export function WalletConnect() {
-  const { address, isConnected, isConnecting, hasWallet, error, connect } = useWallet()
+  const { address, networkName, isConnected, isConnecting, hasWallet, error, connect } =
+    useWallet()
 
   return (
     <div className="wallet-card">
@@ -23,9 +24,12 @@ export function WalletConnect() {
       )}
 
       {isConnected ? (
-        <p className="wallet-address" title={address}>
-          {shortenAddress(address)}
-        </p>
+        <div className="wallet-info">
+          <p className="wallet-address" title={address}>
+            {shortenAddress(address)}
+          </p>
+          {networkName && <p className="wallet-network">{networkName}</p>}
+        </div>
       ) : (
         <button
           onClick={connect}

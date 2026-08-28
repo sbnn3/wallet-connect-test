@@ -52,3 +52,16 @@
   font-size: 13px;
   color: #dc2626;
 }
+
+.wallet-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.wallet-network {
+  font-size: 13px;
+  color: #8a8494;
+  margin: 4px 0 0;
+}
