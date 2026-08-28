@@ -34,7 +34,12 @@ export function useWallet() {
       setAddress(accounts[0])
       setChainId(Number(network.chainId))
     } catch (err) {
-      if (err.code === 4001) {
+      // ethers wraps a raw EIP-1193 rejection (code 4001) into its own
+      // ACTION_REJECTED error, so we check both shapes.
+      const wasRejected =
+        err.code === 'ACTION_REJECTED' || err.info?.error?.code === 4001
+
+      if (wasRejected) {
         setError('Connection request was rejected.')
       } else {
         setError('Could not connect to your wallet. Please try again.')
