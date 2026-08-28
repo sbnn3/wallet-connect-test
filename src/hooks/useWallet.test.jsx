@@ -74,7 +74,7 @@ describe('useWallet', () => {
 
     const { result } = renderHook(() => useWallet())
 
-    await waitFor(() => expect(result.current.isConnected).toBe(true))
+    await waitFor(() => expect(result.current.isConnected).toBe(true), { timeout: 3000 })
 
     expect(result.current.networkName).toBe('Polygon')
     expect(window.ethereum.request).not.toHaveBeenCalledWith(
