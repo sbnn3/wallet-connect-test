@@ -59,6 +59,38 @@ export function useWallet() {
     }
   }, [hasWallet])
 
+  // If the user already authorized this site in a previous visit, pick the
+  // connection back up without asking them to click "Connect" again. This
+  // only reads accounts that are already permitted, so it never triggers
+  // MetaMask's connection popup.
+  useEffect(() => {
+    if (!hasWallet) return
+
+    let cancelled = false
+
+    const restoreSession = async () => {
+      try {
+        const provider = new BrowserProvider(window.ethereum)
+        const accounts = await provider.send('eth_accounts', [])
+
+        if (cancelled || accounts.length === 0) return
+
+        const network = await provider.getNetwork()
+        setAddress(accounts[0])
+        setChainId(Number(network.chainId))
+      } catch {
+        // No existing session to restore, or the wallet isn't ready yet.
+        // Either way, the user can still connect manually.
+      }
+    }
+
+    restoreSession()
+
+    return () => {
+      cancelled = true
+    }
+  }, [hasWallet])
+
   // Keep the UI in sync when the user switches accounts or networks in
   // their wallet, or locks/disconnects it directly from the extension.
   useEffect(() => {
